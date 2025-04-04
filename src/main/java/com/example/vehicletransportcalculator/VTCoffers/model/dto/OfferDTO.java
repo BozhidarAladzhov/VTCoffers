@@ -5,6 +5,7 @@ import com.example.vehicletransportcalculator.VTCoffers.model.enums.PortOfDischa
 import com.example.vehicletransportcalculator.VTCoffers.model.enums.PortOfLoadingEnum;
 
 public record OfferDTO(
+        Long id,
         String description,
         PortOfLoadingEnum portOfLoading,
         PortOfDischargeEnum portOfDischarge,

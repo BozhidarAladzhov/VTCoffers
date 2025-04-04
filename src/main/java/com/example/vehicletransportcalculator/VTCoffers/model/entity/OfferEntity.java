@@ -75,4 +75,13 @@ public class OfferEntity {
     this.price = price;
     return this;
   }
+
+  public Long getId() {
+    return id;
+  }
+
+  public OfferEntity setId(Long id) {
+    this.id = id;
+    return this;
+  }
 }
