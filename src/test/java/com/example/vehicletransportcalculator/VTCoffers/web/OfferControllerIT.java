@@ -20,8 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -103,6 +102,19 @@ public class OfferControllerIT {
 
     }
 
+    @Test
+    public void testDeleteOffer() throws Exception {
+
+        var actualEntity = createTestOffer();
+
+        mockMvc.perform(delete("/offers/{id}", actualEntity.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+
+        Assertions.assertTrue(
+                offerRepository.findById(actualEntity.getId()).isEmpty()
+        );
+    }
 
 
     private OfferEntity createTestOffer() {

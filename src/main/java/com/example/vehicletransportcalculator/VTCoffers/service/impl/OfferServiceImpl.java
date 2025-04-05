@@ -9,6 +9,8 @@ import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import com.example.vehicletransportcalculator.VTCoffers.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 
@@ -51,7 +53,7 @@ public class OfferServiceImpl implements OfferService {
         return offerRepository
                 .findById(id)
                 .map(this::map)
-                .orElseThrow(() -> new IllegalArgumentException("Not found!"));
+                .orElseThrow(ObjectNotFoundException::new);
 
     }
 
