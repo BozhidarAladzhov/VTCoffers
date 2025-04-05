@@ -8,7 +8,6 @@ import com.example.vehicletransportcalculator.VTCoffers.model.enums.PortOfLoadin
 
 
 public record AddOfferDTO(
-        Long id,
     String description,
     PortOfLoadingEnum portOfLoading,
     PortOfDischargeEnum portOfDischarge,

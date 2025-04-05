@@ -4,32 +4,53 @@ import com.example.vehicletransportcalculator.VTCoffers.model.dto.AddOfferDTO;
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.OfferDTO;
 import com.example.vehicletransportcalculator.VTCoffers.model.entity.OfferEntity;
 import com.example.vehicletransportcalculator.VTCoffers.repository.OfferRepository;
+import com.example.vehicletransportcalculator.VTCoffers.service.OceanFreightService;
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
+
+import java.math.BigDecimal;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class OfferServiceImpl implements OfferService {
 
 
     private final OfferRepository offerRepository;
+    private final OceanFreightService oceanFreightService;
 
-    public OfferServiceImpl(OfferRepository offerRepository) {
+    public OfferServiceImpl(OfferRepository offerRepository, OceanFreightService oceanFreightService) {
         this.offerRepository = offerRepository;
+        this.oceanFreightService = oceanFreightService;
     }
 
 
     @Override
-    public void createOffer(AddOfferDTO addOfferDTO) {
-        offerRepository.save(map(addOfferDTO));
+    public OfferDTO createOffer(AddOfferDTO addOfferDTO) {
+        OfferEntity offerEntity = new OfferEntity();
+        offerEntity = offerRepository.save(map(addOfferDTO));
+
+        BigDecimal freightCost = oceanFreightService.calculateOceanFreight(
+                offerEntity.getPortOfLoading(),
+                offerEntity.getPortOfDischarge()
+        );
+
+        return new OfferDTO(
+                offerEntity.getId(),
+                offerEntity.getDescription(),
+                offerEntity.getPortOfLoading(),
+                offerEntity.getPortOfDischarge(),
+                offerEntity.getEngine(),
+                offerEntity.getPrice(),
+                freightCost
+        );
     }
 
     @Override
-    OfferDTO getOfferById(Long id) {
+    public OfferDTO getOfferById(Long id) {
         return offerRepository
                 .findById(id)
-                .map(OfferServiceImpl::map)
+                .map(this::map)
                 .orElseThrow(() -> new IllegalArgumentException("Not found!"));
 
     }
@@ -45,19 +66,28 @@ public class OfferServiceImpl implements OfferService {
         return offerRepository
                 .findAll()
                 .stream()
-                .map(OfferServiceImpl::map)
+                .map(this::map)
                 .toList();
     }
 
-    private static OfferDTO map(OfferEntity offerEntity){
+
+    private OfferDTO map(OfferEntity offerEntity) {
+        BigDecimal freight = oceanFreightService.calculateOceanFreight(
+                offerEntity.getPortOfLoading(),
+                offerEntity.getPortOfDischarge()
+        );
+
         return new OfferDTO(
                 offerEntity.getId(),
                 offerEntity.getDescription(),
                 offerEntity.getPortOfLoading(),
                 offerEntity.getPortOfDischarge(),
                 offerEntity.getEngine(),
-                offerEntity.getPrice());
+                offerEntity.getPrice(),
+                freight
+        );
     }
+
 
     private static OfferEntity map (AddOfferDTO addOfferDTO){
 
