@@ -3,17 +3,13 @@ package com.example.vehicletransportcalculator.VTCoffers.web;
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.AddOfferDTO;
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.OfferDTO;
 
-import com.example.vehicletransportcalculator.VTCoffers.model.enums.PortOfDischargeEnum;
-import com.example.vehicletransportcalculator.VTCoffers.model.enums.PortOfLoadingEnum;
-import com.example.vehicletransportcalculator.VTCoffers.service.OceanFreightService;
+
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 

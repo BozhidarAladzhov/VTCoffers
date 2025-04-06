@@ -125,6 +125,7 @@ public class OfferControllerIT {
                         .setPortOfDischarge(PortOfDischargeEnum.ROTTERDAM)
                         .setEngine(EngineTypeEnum.PETROL)
                         .setPrice(2000)
+
         );
     }
 }
