@@ -8,16 +8,12 @@ import com.example.vehicletransportcalculator.VTCoffers.service.OceanFreightServ
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.Period;
-
-
-
 
 import com.example.vehicletransportcalculator.VTCoffers.service.exception.ObjectNotFoundException;
+import org.hibernate.mapping.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -89,11 +85,12 @@ public class OfferServiceImpl implements OfferService {
 
 
     @Override
-    public PagedModel<OfferDTO> getAllOffers(Pageable pageable) {
-        return new PagedModel<>(offerRepository
-                .findAll(pageable)
+    public List<OfferDTO> getAllOffers() {
+        return offerRepository
+                .findAll()
+                .stream()
                 .map(this::map)
-        );
+                .toList();
     }
 
 

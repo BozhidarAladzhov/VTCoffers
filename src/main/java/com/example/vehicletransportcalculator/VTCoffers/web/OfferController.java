@@ -45,18 +45,9 @@ public class OfferController {
     }
 
     @GetMapping
-    public ResponseEntity<PagedModel<OfferDTO>> getAllOffers(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PageableDefault(
-                    size = 3,
-                    sort="id",
-                    direction = Sort.Direction.DESC
-            ) Pageable pageable) {
-
-        return ResponseEntity.ok(
-                offerService.getAllOffers(pageable)
-        );
-    }
+    public ResponseEntity<List<OfferDTO>> getAllOffers(){
+        return ResponseEntity
+                .ok(offerService.getAllOffers());
 
     @PostMapping
     public ResponseEntity <OfferDTO> createOffer (@RequestBody AddOfferDTO addOfferDTO){

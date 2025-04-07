@@ -12,7 +12,7 @@ public record OfferDTO(
         PortOfLoadingEnum portOfLoading,
         PortOfDischargeEnum portOfDischarge,
         EngineTypeEnum engineType,
-        int price,
+        Integer price,
         BigDecimal oceanFreight
 ) {
 

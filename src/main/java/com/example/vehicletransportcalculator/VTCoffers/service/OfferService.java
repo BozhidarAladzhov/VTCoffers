@@ -2,11 +2,8 @@ package com.example.vehicletransportcalculator.VTCoffers.service;
 
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.AddOfferDTO;
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.OfferDTO;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedModel;
+import org.hibernate.mapping.List;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.List;
 
 
 public interface OfferService {
@@ -17,8 +14,7 @@ public interface OfferService {
 
     OfferDTO getOfferById(Long id);
 
-    PagedModel<OfferDTO> getAllOffers(Pageable pageable);
-
+    List getAllOffers();
 
     boolean isOwner(UserDetails userDetails, Long offerId);
 
