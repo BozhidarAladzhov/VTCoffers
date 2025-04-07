@@ -8,6 +8,7 @@ import com.example.vehicletransportcalculator.VTCoffers.service.OceanFreightServ
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 
 import java.math.BigDecimal;
+<<<<<<< HEAD
 
 import com.example.vehicletransportcalculator.VTCoffers.service.exception.ObjectNotFoundException;
 import org.hibernate.mapping.List;
@@ -18,6 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
+=======
+import java.util.List;
+
+import com.example.vehicletransportcalculator.VTCoffers.service.exception.ObjectNotFoundException;
+>>>>>>> parent of 4025fdc (Delete method)
 import org.springframework.stereotype.Service;
 
 
@@ -25,15 +31,10 @@ import org.springframework.stereotype.Service;
 public class OfferServiceImpl implements OfferService {
 
 
-    private final Logger LOGGER = LoggerFactory.getLogger(OfferService.class);
     private final OfferRepository offerRepository;
     private final OceanFreightService oceanFreightService;
 
-
-
-    public OfferServiceImpl(OfferRepository offerRepository,
-                            OceanFreightService oceanFreightService) {
-
+    public OfferServiceImpl(OfferRepository offerRepository, OceanFreightService oceanFreightService) {
         this.offerRepository = offerRepository;
         this.oceanFreightService = oceanFreightService;
     }
@@ -71,12 +72,12 @@ public class OfferServiceImpl implements OfferService {
 
 
     @Override
-    @PreAuthorize("@offerServiceImpl.isOwner(#userDetails, #offerId)")
-    public void deleteOffer(UserDetails userDetails, Long offerId) {
+    public void deleteOffer(Long offerId) {
         offerRepository.deleteById(offerId);
     }
 
     @Override
+<<<<<<< HEAD
     public boolean isOwner(UserDetails userDetails, Long offerId) {
         //
         return true;
@@ -85,6 +86,8 @@ public class OfferServiceImpl implements OfferService {
 
 
     @Override
+=======
+>>>>>>> parent of 4025fdc (Delete method)
     public List<OfferDTO> getAllOffers() {
         return offerRepository
                 .findAll()
@@ -92,7 +95,6 @@ public class OfferServiceImpl implements OfferService {
                 .map(this::map)
                 .toList();
     }
-
 
 
     private OfferDTO map(OfferEntity offerEntity) {

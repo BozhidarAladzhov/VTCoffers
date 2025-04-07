@@ -9,13 +9,7 @@ import com.example.vehicletransportcalculator.VTCoffers.service.OceanFreightServ
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -40,18 +34,21 @@ public class OfferController {
                 .ok(offerService.getOfferById(id));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<OfferDTO> deleteById(@PathVariable("id") Long id,
-                                               @AuthenticationPrincipal UserDetails userDetails) {
-        offerService.deleteOffer(userDetails, id);
-        return ResponseEntity
-                .noContent()
-                .build();
+    public ResponseEntity<OfferDTO> deleteById (@PathVariable("id")Long id){
+        offerService.deleteOffer(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<List<OfferDTO>> getAllOffers(){
+<<<<<<< HEAD
         return ResponseEntity
                 .ok(offerService.getAllOffers());
+=======
+            return ResponseEntity
+                    .ok(offerService.getAllOffers());
+    }
+>>>>>>> parent of 4025fdc (Delete method)
 
     @PostMapping
     public ResponseEntity <OfferDTO> createOffer (@RequestBody AddOfferDTO addOfferDTO){

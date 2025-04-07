@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface OfferRepository extends JpaRepository<OfferEntity, Long> {
 
+
+
     Optional<OfferEntity> findById(long id);
-
-
 }
