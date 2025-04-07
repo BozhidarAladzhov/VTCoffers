@@ -7,7 +7,13 @@ import com.example.vehicletransportcalculator.VTCoffers.model.dto.OfferDTO;
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
@@ -30,15 +36,26 @@ public class OfferController {
                 .ok(offerService.getOfferById(id));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<OfferDTO> deleteById (@PathVariable("id")Long id){
-        offerService.deleteOffer(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OfferDTO> deleteById(@PathVariable("id") Long id,
+                                               @AuthenticationPrincipal UserDetails userDetails) {
+        offerService.deleteOffer(userDetails, id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @GetMapping
-    public ResponseEntity<List<OfferDTO>> getAllOffers(){
-            return ResponseEntity
-                    .ok(offerService.getAllOffers());
+    public ResponseEntity<PagedModel<OfferDTO>> getAllOffers(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PageableDefault(
+                    size = 3,
+                    sort="id",
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable) {
+
+        return ResponseEntity.ok(
+                offerService.getAllOffers(pageable)
+        );
     }
 
     @PostMapping

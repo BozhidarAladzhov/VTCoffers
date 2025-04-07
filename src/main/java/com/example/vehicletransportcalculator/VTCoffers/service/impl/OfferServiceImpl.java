@@ -8,9 +8,20 @@ import com.example.vehicletransportcalculator.VTCoffers.service.OceanFreightServ
 import com.example.vehicletransportcalculator.VTCoffers.service.OfferService;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.Instant;
+import java.time.Period;
+
+
+
 
 import com.example.vehicletransportcalculator.VTCoffers.service.exception.ObjectNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 
@@ -18,10 +29,15 @@ import org.springframework.stereotype.Service;
 public class OfferServiceImpl implements OfferService {
 
 
+    private final Logger LOGGER = LoggerFactory.getLogger(OfferService.class);
     private final OfferRepository offerRepository;
     private final OceanFreightService oceanFreightService;
 
-    public OfferServiceImpl(OfferRepository offerRepository, OceanFreightService oceanFreightService) {
+
+
+    public OfferServiceImpl(OfferRepository offerRepository,
+                            OceanFreightService oceanFreightService) {
+
         this.offerRepository = offerRepository;
         this.oceanFreightService = oceanFreightService;
     }
@@ -59,18 +75,27 @@ public class OfferServiceImpl implements OfferService {
 
 
     @Override
-    public void deleteOffer(Long offerId) {
+    @PreAuthorize("@offerServiceImpl.isOwner(#userDetails, #offerId)")
+    public void deleteOffer(UserDetails userDetails, Long offerId) {
         offerRepository.deleteById(offerId);
     }
 
     @Override
-    public List<OfferDTO> getAllOffers() {
-        return offerRepository
-                .findAll()
-                .stream()
-                .map(this::map)
-                .toList();
+    public boolean isOwner(UserDetails userDetails, Long offerId) {
+        //
+        return true;
     }
+
+
+
+    @Override
+    public PagedModel<OfferDTO> getAllOffers(Pageable pageable) {
+        return new PagedModel<>(offerRepository
+                .findAll(pageable)
+                .map(this::map)
+        );
+    }
+
 
 
     private OfferDTO map(OfferEntity offerEntity) {
