@@ -2,11 +2,9 @@ package com.example.vehicletransportcalculator.VTCoffers.service;
 
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.AddOfferDTO;
 import com.example.vehicletransportcalculator.VTCoffers.model.dto.OfferDTO;
-<<<<<<< HEAD
-import org.hibernate.mapping.List;
 import org.springframework.security.core.userdetails.UserDetails;
-=======
->>>>>>> parent of 4025fdc (Delete method)
+
+import java.util.List;
 
 
 public interface OfferService {
@@ -17,11 +15,11 @@ public interface OfferService {
 
     OfferDTO getOfferById(Long id);
 
-<<<<<<< HEAD
-    List getAllOffers();
-=======
-    void deleteOffer (Long offerId);
+    boolean isOwner(UserDetails userDetails, Long offerId);
 
->>>>>>> parent of 4025fdc (Delete method)
+
+    void deleteOffer(UserDetails userDetails, Long offerId);
+
+
 
 }
