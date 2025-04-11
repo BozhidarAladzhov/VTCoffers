@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,6 +26,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(
+        username = "pesho@example.com",
+        roles = {"USER", "ADMIN"}
+)
 public class OfferControllerIT {
 
     @Autowired
@@ -53,9 +58,9 @@ public class OfferControllerIT {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(actualEntity.getId().intValue())))
                 .andExpect(jsonPath("$.description", is(actualEntity.getDescription())))
-                .andExpect(jsonPath("$.portOfLoading", is(actualEntity.getPortOfLoading())))
-                .andExpect(jsonPath("$.portOfDischarge", is(actualEntity.getPortOfDischarge())))
-                .andExpect(jsonPath("$.engineType", is(actualEntity.getEngine())))
+                .andExpect(jsonPath("$.portOfLoading", is(actualEntity.getPortOfLoading().name())))
+                .andExpect(jsonPath("$.portOfDischarge", is(actualEntity.getPortOfDischarge().name())))
+                .andExpect(jsonPath("$.engineType", is(actualEntity.getEngine().name())))
                 .andExpect(jsonPath("$.price", is(actualEntity.getPrice())));
     }
 
@@ -73,10 +78,10 @@ public class OfferControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                   {
-                    "description": "test",
-                    "portOfLoading": NEW_YORK,
-                    "portOfDischarge": ROTTERDAM,
-                    "engineType": PETROL,
+                    "description": "Test description",
+                    "portOfLoading": "NEW_YORK",
+                    "portOfDischarge": "ROTTERDAM",
+                    "engineType": "PETROL",
                     "price": 2000
                   }
                 """)
@@ -120,7 +125,7 @@ public class OfferControllerIT {
     private OfferEntity createTestOffer() {
         return offerRepository.save(
                 new OfferEntity()
-                        .setDescription("test")
+                        .setDescription("Test description")
                         .setPortOfLoading(PortOfLoadingEnum.NEW_YORK)
                         .setPortOfDischarge(PortOfDischargeEnum.ROTTERDAM)
                         .setEngine(EngineTypeEnum.PETROL)

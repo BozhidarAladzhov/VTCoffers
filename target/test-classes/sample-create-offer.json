@@ -1,0 +1,7 @@
+{
+  "description": "Test description",
+  "portOfLoading": "NEW_YORK",
+  "portOfDischarge": "ROTTERDAM",
+  "engineType": "PETROL",
+  "price": 2000
+}
